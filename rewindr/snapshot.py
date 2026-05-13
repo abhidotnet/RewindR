@@ -71,7 +71,7 @@ class Snapshot:
         """
         base = os.path.basename(self.filename) if self.filename else self.filename
         src = source_line_preview(self.filename, self.line_no, max_len=max_source)
-        code = f"`{src}`" if src else "(source text unavailable — REPL, dynamic code, or missing file)"
+        code = f"`{src}`" if src else "(source text unavailable - REPL, dynamic code, or missing file)"
         hints: dict[str, str] = {
             "line": "Interpreter reached this line; locals reflect state before it runs.",
             "return": "Returning from the function; locals include the value being returned.",
@@ -95,7 +95,7 @@ class Snapshot:
             f"{k}={v!r}" for k, v in list(self.locals.items())[:4]
         )
         if len(self.locals) > 4:
-            local_preview += ", …"
+            local_preview += ", ..."
         return (
             f"<Snapshot step={self.step} line={self.line_no} "
             f"func={self.func_name!r} locals=({local_preview})>"

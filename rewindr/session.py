@@ -166,7 +166,7 @@ class RewindSession:
 
         header = [
             "Locals diff (shallow copy of frame.f_locals at each snapshot):",
-            f"  From history index {ia} → {ib}  (step {snap_a.step} → {snap_b.step}).",
+            f"  From history index {ia} -> {ib}  (step {snap_a.step} -> {snap_b.step}).",
             _one(ia, snap_a),
             _one(ib, snap_b),
             "",
@@ -180,10 +180,10 @@ class RewindSession:
             ):
                 header.append(
                     "They are consecutive captures at the same source line and event "
-                    "(locals were identical both times — common right before/after a no-op step)."
+                    "(locals were identical both times - common right before/after a no-op step)."
                 )
             elif snap_a.step == snap_b.step:
-                header.append("Same snapshot index twice — nothing to compare.")
+                header.append("Same snapshot index twice - nothing to compare.")
             return "\n".join(header)
 
         header.append("Changed variables:")
@@ -198,15 +198,15 @@ class RewindSession:
         """
         n = len(self.history)
         lines: list[str] = [
-            f"RewindSession — {n} snapshot(s) of traced lines/returns"
-            + (f" ({self.evicted} oldest evicted — increase steps=)" if self.evicted else ""),
+            f"RewindSession - {n} snapshot(s) of traced lines/returns"
+            + (f" ({self.evicted} oldest evicted - increase steps=)" if self.evicted else ""),
         ]
         if self.exception:
             lines.append(
-                f"  ✗ Exception: {type(self.exception).__name__}: {self.exception}"
+                f"  [!] Exception: {type(self.exception).__name__}: {self.exception}"
             )
         else:
-            lines.append("  ✓ Finished without raising")
+            lines.append("  [ok] Finished without raising")
 
         if self.history:
             tail = self.history[-1]
@@ -217,7 +217,7 @@ class RewindSession:
             [
                 "",
                 "Legend: step = capture counter from the start of this run (0-based).",
-                "        line = 1-based source line.  → = last snapshot (where tracing stopped).",
+                "        line = 1-based source line.  * = last snapshot (where tracing stopped).",
                 "",
             ]
         )
@@ -227,16 +227,16 @@ class RewindSession:
 
         omitted = n - 5
         if omitted > 0:
-            lines.append(f"… {omitted} earlier snapshot(s) not shown (showing last 5 of {n})")
+            lines.append(f"... {omitted} earlier snapshot(s) not shown (showing last 5 of {n})")
         recent = self.history[-5:]
         total = n
         for i, snap in enumerate(recent):
             hist_idx = n - len(recent) + i
             snap_num = hist_idx + 1
-            marker = "→" if snap is self.history[-1] else " "
+            marker = "*" if snap is self.history[-1] else " "
             preview = source_line_preview(snap.filename, snap.line_no, max_len=64)
             if not preview:
-                preview = "—"
+                preview = "-"
             lines.append(
                 f"  {marker} #{snap_num}/{total}  hist[{hist_idx}]  step={snap.step:4d}  "
                 f"line={snap.line_no:4d}  [{snap.event:<8}]  {preview}"

@@ -106,7 +106,7 @@ def source_line_preview(
         return ""
     if len(stripped) <= max_len:
         return stripped
-    return stripped[: max_len - 1] + "…"
+    return stripped[: max_len - 1] + "..."
 
 
 def format_diff_locals(delta: dict[str, dict[str, Any]]) -> str:
@@ -118,7 +118,7 @@ def format_diff_locals(delta: dict[str, dict[str, Any]]) -> str:
     lines: list[str] = []
     for name in sorted(delta):
         change = delta[name]
-        lines.append(f"  {name}: {change['before']!r} → {change['after']!r}")
+        lines.append(f"  {name}: {change['before']!r} -> {change['after']!r}")
     return "\n".join(lines)
 
 
@@ -135,5 +135,5 @@ def format_snapshot_locals(locals_: dict[str, Any], max_vars: int = 10) -> str:
     """
     items = list(locals_.items())[:max_vars]
     parts = [f"{k}={v!r}" for k, v in items]
-    suffix = f" … (+{len(locals_) - max_vars} more)" if len(locals_) > max_vars else ""
+    suffix = f" ... (+{len(locals_) - max_vars} more)" if len(locals_) > max_vars else ""
     return "{" + ", ".join(parts) + suffix + "}"
